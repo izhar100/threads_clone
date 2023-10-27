@@ -2,6 +2,7 @@ import { Avatar, Box, Button, Divider, Flex, Image, Text, useColorMode } from '@
 import React, { useState } from 'react'
 import { BsThreeDots } from 'react-icons/bs'
 import Actions from '../components/Actions'
+import Comment from '../components/Comment'
 
 const PostPage = () => {
     const [liked, setLiked] = useState(false)
@@ -42,6 +43,27 @@ const PostPage = () => {
                 <Button>Get</Button>
             </Flex>
             <Divider my={4}/>
+            <Comment 
+             comment={"It's a great update!"} 
+             createdAt={"2d"} 
+             likes={50} 
+             username={"ezharashraf"} 
+             userAvatar={"https://bit.ly/dan-abramov"}
+            />
+            <Comment 
+             comment={"It's really awesome!"} 
+             createdAt={"3d"} 
+             likes={56} 
+             username={"mustafa"} 
+             userAvatar={"https://bit.ly/kent-c-dodds"}
+            />
+            <Comment 
+             comment={"Yah that's nice!"} 
+             createdAt={"2d"} 
+             likes={50} 
+             username={"shamsher"} 
+             userAvatar={"https://bit.ly/ryan-florence"}
+            />
         </>
     )
 }
