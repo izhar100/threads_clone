@@ -29,9 +29,11 @@ export default function UpdateProfilepage() {
   })
   const fileRef = useRef(null)
   const { handleImageChange, imgUrl } = usePreviewImg()
-  console.log("user:", user)
+  const [updating,setUpdating]=useState(false)
   const handleSubmit=async(e)=>{
     e.preventDefault()
+    if(updating) return;
+    setUpdating(true)
     try {
       const res=await fetch(`/api/users/update/${user._id}`,{
         method:'PUT',
@@ -50,6 +52,8 @@ export default function UpdateProfilepage() {
       localStorage.setItem("user-threads",JSON.stringify(data))
     } catch (err) {
       showToast("Error",err,"error")
+    } finally{
+      setUpdating(false)
     }
   }
   return (
@@ -142,7 +146,7 @@ export default function UpdateProfilepage() {
               w="full"
               _hover={{
                 bg: 'green.500',
-              }} type='submit'>
+              }} type='submit' isLoading={updating}>
               Submit
             </Button>
           </Stack>
