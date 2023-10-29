@@ -36,6 +36,8 @@ export default function SignupCard() {
   })
   
   const handleSignup=async()=>{
+    if(loading) return
+    setLoading(true)
     try {
         const res=await fetch("/api/users/signup",{
             method:"POST",
@@ -53,6 +55,8 @@ export default function SignupCard() {
         setUser(data)
     } catch (err) {
         console.log(err)
+    } finally{
+      setLoading(false)
     }
   }
   return (
@@ -113,14 +117,13 @@ export default function SignupCard() {
             </FormControl>
             <Stack spacing={10} pt={2}>
               <Button
-                loadingText="Submitting"
                 size="lg"
                 bg={useColorModeValue('gray.600','gray.700')}
                 color={'white'}
                 _hover={{
                   bg: useColorModeValue('gray.700','gray.800'),
                 }}
-                onClick={handleSignup}
+                onClick={handleSignup} isLoading={loading}
                 >
                 Sign up
               </Button>

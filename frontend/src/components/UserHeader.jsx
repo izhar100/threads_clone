@@ -12,7 +12,7 @@ const UserHeader = ({user}) => {
     const showToast=useShowToast()
     const currentUser=useRecoilValue(userAtom) //logged in user
     const navigate=useNavigate()
-    const [following,setFollowing]=useState(user?.followers.includes(currentUser._id))
+    const [following,setFollowing]=useState(user?.followers.includes(currentUser?._id))
     const [updating,setUpdating]=useState(false)
     const copyURL = () => {
         const currentURL = window.location.href;

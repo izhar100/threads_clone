@@ -26,11 +26,14 @@ import userAtom from '../atoms/userAtom'
     const setAuthScreen=useSetRecoilState(authScreenAtom)
     const setUser=useSetRecoilState(userAtom)
     const showToast=useShowToast()
+    const [loading,setLoading]=useState(false)
     const [inputs,setInputs]=useState({
         username:"",
         password:""
     })
     const handleLogin=async(req,res)=>{
+        if(loading) return;
+        setLoading(true)
         try {
             const res=await fetch("/api/users/login",{
                 method: "POST",
@@ -51,6 +54,8 @@ import userAtom from '../atoms/userAtom'
         } catch (error) {
             console.log(error)
             showToast("error",error,"error")
+        }finally{
+          setLoading(false)
         }
     }
     return (
@@ -93,13 +98,13 @@ import userAtom from '../atoms/userAtom'
               </FormControl>
               <Stack spacing={10} pt={2}>
                 <Button
-                  loadingText="Submitting"
+                  loadingText="Login"
                   size="lg"
                   bg={useColorModeValue('gray.600','gray.700')}
                   color={'white'}
                   _hover={{
                     bg: useColorModeValue('gray.700','gray.800'),
-                  }} onClick={handleLogin}>
+                  }} onClick={handleLogin} isLoading={loading}>
                   Login
                 </Button>
               </Stack>
