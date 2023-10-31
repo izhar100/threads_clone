@@ -6,9 +6,10 @@ import Actions from './Actions'
 import useShowToast from '../hooks/useShowToast'
 import { formatDistanceToNow } from 'date-fns'
 
-const Post = ({ post, postedBy }) => {
+const Post = ({ post:post_, postedBy }) => {
     const [liked, setLiked] = useState(false)
     const [user, setUser] = useState(null)
+    const [post,setPost]=useState(post_)
     const showToast = useShowToast()
     const navigate=useNavigate()
 
@@ -29,6 +30,9 @@ const Post = ({ post, postedBy }) => {
         getUser()
     }, [showToast, postedBy])
     // if (!user) return null
+    const handleReplyInPost=(reply)=>{
+        setPost({...post,replies:[...post.replies,reply]})     
+    }
     return (
         <>
             <Link to={"/markzukerberg/post/1"}>
@@ -100,7 +104,7 @@ const Post = ({ post, postedBy }) => {
                             </Box>
                         }
                         <Flex gap={3} my={1}>
-                            <Actions post={post} />
+                            <Actions post={post} handleReplyInPost={handleReplyInPost} />
                         </Flex>
                     </Flex>
                 </Flex>

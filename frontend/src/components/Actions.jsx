@@ -1,44 +1,75 @@
-import { Flex, useColorMode,Box,Text } from '@chakra-ui/react'
+import { Flex, useColorMode, Box, Text, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, FormControl, FormLabel, Input, ModalFooter, Button, useDisclosure, Textarea } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { useRecoilValue } from 'recoil'
 import userAtom from '../atoms/userAtom'
 import useShowToast from '../hooks/useShowToast'
 
-const Actions = ({ post: post_ }) => {
+const Actions = ({ post: post_ ,handleReplyInPost}) => {
   const user = useRecoilValue(userAtom)
   const showToast = useShowToast()
   const { colorMode } = useColorMode()
   const [liked, setLiked] = useState(post_.likes.includes(user?._id))
-  const [post,setPost]=useState(post_)
-  const [isLiking,setIsLiking]=useState(false)
+  const [post, setPost] = useState(post_)
+  const [isLiking, setIsLiking] = useState(false)
+  const [reply,setReply]=useState("")
+  const [isReplying,setIsReplying]=useState(false)
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const handleLikeAndUnlike = async () => {
     if (!user) {
       return showToast("Error", 'You must be logged in to like a post', 'error')
     }
-    if(isLiking) return;
+    if (isLiking) return;
     setIsLiking(true)
     try {
-      const res=await fetch(`/api/posts/like/${post._id}`,{
-        method:'PUT',
-        headers:{
-          'Content-Type':'application/json'
+      const res = await fetch(`/api/posts/like/${post._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
         }
       })
-      const data=await res.json()
-      if(data.error){
-        return showToast("Error",data.error, 'error')
+      const data = await res.json()
+      if (data.error) {
+        return showToast("Error", data.error, 'error')
       }
-      if(!liked){
-        setPost({...post,likes:[...post.likes,user._id]})
-      }else{
-        setPost({...post,likes:post.likes.filter(id=>id!==user._id)})
+      if (!liked) {
+        setPost({ ...post, likes: [...post.likes, user._id] })
+      } else {
+        setPost({ ...post, likes: post.likes.filter(id => id !== user._id) })
       }
       setLiked(!liked)
 
     } catch (error) {
-      showToast("Error",error.message, 'error')
-    }finally{
+      showToast("Error", error.message, 'error')
+    } finally {
       setIsLiking(false)
+    }
+  }
+
+  const handleReply=async()=>{
+    if(!user) return showToast("Error", 'You must be logged in to reply', 'error')
+    if(isReplying) return;
+    setIsReplying(true)
+    try {
+      const res=await fetch(`/api/posts/reply/${post._id}`,{
+        method:'PUT',
+        headers:{
+          'Content-Type':'application/json'
+        },
+        body:JSON.stringify({text:reply})
+      })
+      const data=await res.json()
+      if(data.error){
+        return showToast("Error", data.error, 'error')
+      }
+      setPost({...post,replies:[...post.replies,reply]})
+      showToast("Success","Reply added successfully","success")
+      handleReplyInPost(reply)
+      setReply("")
+      onClose()
+    } catch (error) {
+      showToast("Error", error.message, 'error')
+    }finally{
+      setIsReplying(false)
     }
   }
   return (
@@ -70,6 +101,7 @@ const Actions = ({ post: post_ }) => {
             role='img'
             viewBox='0 0 24 24'
             width='20'
+            onClick={onOpen}
           >
             <title>Comment</title>
             <path
@@ -81,52 +113,9 @@ const Actions = ({ post: post_ }) => {
             >
             </path>
           </svg>
+          <RepostSVG />
+          <ShareSVG/>
 
-          <svg
-            aria-label='Repost'
-            color='currentColor'
-            fill='currentColor'
-            height='20'
-            role='img'
-            viewBox='0 0 24 24'
-            width='20'
-          >
-            <title>Repost</title>
-            <path
-              fill=''
-              d='M19.998 9.497a1 1 0 0 0-1 1v4.228a3.274 3.274 0 0 1-3.27 3.27h-5.313l1.791-1.787a1 1 0 0 0-1.412-1.416L7.29 18.287a1.004 1.004 0 0 0-.294.707v.001c0 .023.012.042.013.065a.923.923 0 0 0 .281.643l3.502 3.504a1 1 0 0 0 1.414-1.414l-1.797-1.798h5.318a5.276 5.276 0 0 0 5.27-5.27v-4.228a1 1 0 0 0-1-1Zm-6.41-3.496-1.795 1.795a1 1 0 1 0 1.414 1.414l3.5-3.5a1.003 1.003 0 0 0 0-1.417l-3.5-3.5a1 1 0 0 0-1.414 1.414l1.794 1.794H8.27A5.277 5.277 0 0 0 3 9.271V13.5a1 1 0 0 0 2 0V9.271a3.275 3.275 0 0 1 3.271-3.27Z'
-            >
-            </path>
-          </svg>
-
-          <svg
-            aria-label='Share'
-            color=''
-            fill='rgb(243, 245, 247)'
-            height='20'
-            role='img'
-            viewBox='0 0 24 24'
-            width='20'
-          >
-            <title>Share</title>
-            <line
-              fill='none'
-              stroke='currentColor'
-              strokeLinejoin='round'
-              strokeWidth='2'
-              x1='22'
-              x2='9.218'
-              y1='3'
-              y2='10.083'
-            ></line>
-            <polygon
-              fill='none'
-              points='11.698 20.334 22 3.001 2 3.001 9.218 10.084 11.698 20.334'
-              stroke='currentColor'
-              strokeLinejoin='round'
-              strokeWidth='2'
-            ></polygon>
-          </svg>
         </Flex>
         <Flex display={post.replies.length > 0 || post.likes.length > 0 ? "flex" : "none"} gap={2} alignItems={"center"}>
           <Text display={post.replies.length > 0 ? "block" : "none"} fontSize={'sm'} color={'gray.light'}>{post.replies.length} replies</Text>
@@ -134,8 +123,84 @@ const Actions = ({ post: post_ }) => {
           <Text display={post.likes.length > 0 ? "block" : "none"} fontSize={'sm'} color={'gray.light'}>{post.likes.length} likes</Text>
         </Flex>
       </Flex>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader></ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={2} pt={4}>
+            <FormControl>
+              <Textarea value={reply} onChange={(e)=>setReply(e.target.value)} placeholder='Add your reply here...' />
+            </FormControl>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button size={"sm"} colorScheme='blue' mr={3} onClick={handleReply}
+            isLoading={isReplying}>
+              Reply
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   )
 }
 
 export default Actions
+
+const RepostSVG = () => {
+  return (
+    <svg
+      aria-label='Repost'
+      color='currentColor'
+      fill='currentColor'
+      height='20'
+      role='img'
+      viewBox='0 0 24 24'
+      width='20'
+    >
+      <title>Repost</title>
+      <path
+        fill=''
+        d='M19.998 9.497a1 1 0 0 0-1 1v4.228a3.274 3.274 0 0 1-3.27 3.27h-5.313l1.791-1.787a1 1 0 0 0-1.412-1.416L7.29 18.287a1.004 1.004 0 0 0-.294.707v.001c0 .023.012.042.013.065a.923.923 0 0 0 .281.643l3.502 3.504a1 1 0 0 0 1.414-1.414l-1.797-1.798h5.318a5.276 5.276 0 0 0 5.27-5.27v-4.228a1 1 0 0 0-1-1Zm-6.41-3.496-1.795 1.795a1 1 0 1 0 1.414 1.414l3.5-3.5a1.003 1.003 0 0 0 0-1.417l-3.5-3.5a1 1 0 0 0-1.414 1.414l1.794 1.794H8.27A5.277 5.277 0 0 0 3 9.271V13.5a1 1 0 0 0 2 0V9.271a3.275 3.275 0 0 1 3.271-3.27Z'
+      >
+      </path>
+    </svg>
+  )
+}
+
+const ShareSVG = () => {
+  return (
+    <svg
+      aria-label='Share'
+      color=''
+      fill='rgb(243, 245, 247)'
+      height='20'
+      role='img'
+      viewBox='0 0 24 24'
+      width='20'
+    >
+      <title>Share</title>
+      <line
+        fill='none'
+        stroke='currentColor'
+        strokeLinejoin='round'
+        strokeWidth='2'
+        x1='22'
+        x2='9.218'
+        y1='3'
+        y2='10.083'
+      ></line>
+      <polygon
+        fill='none'
+        points='11.698 20.334 22 3.001 2 3.001 9.218 10.084 11.698 20.334'
+        stroke='currentColor'
+        strokeLinejoin='round'
+        strokeWidth='2'
+      ></polygon>
+    </svg>
+  )
+}
