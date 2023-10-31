@@ -1,19 +1,22 @@
 import { Flex, useColorMode, Box, Text, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, FormControl, FormLabel, Input, ModalFooter, Button, useDisclosure, Textarea } from '@chakra-ui/react'
 import React, { useState } from 'react'
-import { useRecoilValue } from 'recoil'
+import { useRecoilState, useRecoilValue} from 'recoil'
 import userAtom from '../atoms/userAtom'
 import useShowToast from '../hooks/useShowToast'
+import { useParams } from 'react-router-dom'
+import postsAtom from '../atoms/postsAtom'
 
-const Actions = ({ post: post_ ,handleReplyInPost}) => {
+const Actions = ({ post }) => {
   const user = useRecoilValue(userAtom)
   const showToast = useShowToast()
   const { colorMode } = useColorMode()
-  const [liked, setLiked] = useState(post_.likes.includes(user?._id))
-  const [post, setPost] = useState(post_)
+  const [liked, setLiked] = useState(post?.likes.includes(user?._id))
+  const [posts,setPosts]=useRecoilState(postsAtom)
   const [isLiking, setIsLiking] = useState(false)
   const [reply,setReply]=useState("")
   const [isReplying,setIsReplying]=useState(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const {pid}=useParams()
   const handleLikeAndUnlike = async () => {
     if (!user) {
       return showToast("Error", 'You must be logged in to like a post', 'error')
@@ -32,9 +35,21 @@ const Actions = ({ post: post_ ,handleReplyInPost}) => {
         return showToast("Error", data.error, 'error')
       }
       if (!liked) {
-        setPost({ ...post, likes: [...post.likes, user._id] })
+        const updatedPosts=posts.map((p)=>{
+          if(p._id==post._id){
+            return {...p,likes:[...p.likes,user._id]};
+          }
+          return p;
+        })
+        setPosts(updatedPosts)
       } else {
-        setPost({ ...post, likes: post.likes.filter(id => id !== user._id) })
+        const updatedPosts=posts.map((p)=>{
+          if(p._id==post._id){
+            return {...p,likes:p.likes.filter((id)=>id!==user._id)};
+          }
+          return p;
+        })
+        setPosts(updatedPosts)
       }
       setLiked(!liked)
 
@@ -61,9 +76,14 @@ const Actions = ({ post: post_ ,handleReplyInPost}) => {
       if(data.error){
         return showToast("Error", data.error, 'error')
       }
-      setPost({...post,replies:[...post.replies,reply]})
+      const updatedPosts=posts.map((p)=>{
+        if(p._id===post._id){
+          return {...p,replies:[...p.replies,data]}
+        }
+        return p;
+      })
+      setPosts(updatedPosts)
       showToast("Success","Reply added successfully","success")
-      handleReplyInPost(reply)
       setReply("")
       onClose()
     } catch (error) {
@@ -117,10 +137,10 @@ const Actions = ({ post: post_ ,handleReplyInPost}) => {
           <ShareSVG/>
 
         </Flex>
-        <Flex display={post.replies.length > 0 || post.likes.length > 0 ? "flex" : "none"} gap={2} alignItems={"center"}>
-          <Text display={post.replies.length > 0 ? "block" : "none"} fontSize={'sm'} color={'gray.light'}>{post.replies.length} replies</Text>
-          <Box display={post.replies.length > 0 && post.likes.length > 0 ? "block" : "none"} w={0.5} h={0.5} borderRadius={'full'} bg={"gray.light"}></Box>
-          <Text display={post.likes.length > 0 ? "block" : "none"} fontSize={'sm'} color={'gray.light'}>{post.likes.length} likes</Text>
+        <Flex display={post?.replies.length > 0 || post?.likes.length > 0 ? "flex" : "none"} gap={2} alignItems={"center"}>
+          <Text display={post?.replies.length > 0 ? "block" : "none"} fontSize={'sm'} color={'gray.light'}>{post?.replies.length} replies</Text>
+          <Box display={post?.replies.length > 0 && post?.likes.length > 0 ? "block" : "none"} w={0.5} h={0.5} borderRadius={'full'} bg={"gray.light"}></Box>
+          <Text display={post?.likes.length > 0 ? "block" : "none"} fontSize={'sm'} color={'gray.light'}>{post?.likes.length} likes</Text>
         </Flex>
       </Flex>
       <Modal

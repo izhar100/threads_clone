@@ -7,31 +7,18 @@ import Loader from '../components/Loader'
 import NotFound from '../components/NotFound'
 import { Heading } from '@chakra-ui/react'
 import Post from '../components/Post'
+import getUserProfile from '../hooks/getUserProfile'
+import { useRecoilState } from 'recoil'
+import postsAtom from '../atoms/postsAtom'
 
 const UserPage = () => {
-  const [user,setUser]=useState(null)
+  const {loading,user}=getUserProfile()
   const showToast=useShowToast()
   const {username}=useParams()
-  const [loading,setLoading]=useState(true)
-  const [posts,setPosts]=useState([])
+  const [posts,setPosts]=useRecoilState(postsAtom)
   const [fetchingPosts,setFetchingPosts]=useState(false)
 
   useEffect(()=>{
-    const getUser=async()=>{
-      try {
-        const res=await fetch(`/api/users/profile/${username}`)
-        const data=await res.json()
-        if(data.error){
-          showToast("Error",data.error,"error")
-          return;
-        }
-        setUser(data)
-      } catch (err) {
-        showToast("Error",err,"error")
-      }finally{
-        setLoading(false)
-      }
-    }
 
     const getPosts=async()=>{
       setFetchingPosts(true)
@@ -51,9 +38,7 @@ const UserPage = () => {
     }
     getPosts()
 
-    getUser()
-
-  },[username,showToast])
+  },[username,showToast,setPosts])
 
   if(!user && loading){
     return <Loader/>

@@ -17,8 +17,11 @@ function App() {
 
   return (
     <>
+     <Header/>
       <Container maxW={"620px"}>
-        <Header/>
+        <br />
+        <br />
+        <br />
         <Routes>
           <Route path="/" element={ user?<HomePage/>:<Navigate to={"/auth"}/>}/>
           <Route path="/update" element={ user?<UpdateProfilepage/>:<Navigate to={"/auth"}/>}/>
@@ -26,8 +29,8 @@ function App() {
           <Route path="/:username" element={<UserPage/>} />
           <Route path="/:username/post/:pid" element={<PostPage/>} />
         </Routes>
-        {user && <LogoutButton/>}
-        {user && <CreatePost/>}
+        {/* {user && <LogoutButton/>} */}
+        {/* {user && <CreatePost/>} */}
       </Container>
 
     </>

@@ -1,17 +1,20 @@
 import { Avatar, Box, Flex, Image, Text } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
-import { BsThreeDots } from 'react-icons/bs'
 import { Link, useNavigate } from 'react-router-dom'
 import Actions from './Actions'
 import useShowToast from '../hooks/useShowToast'
 import { formatDistanceToNow } from 'date-fns'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import userAtom from '../atoms/userAtom'
+import { DeleteIcon } from '@chakra-ui/icons'
+import postsAtom from '../atoms/postsAtom'
 
-const Post = ({ post:post_, postedBy }) => {
-    const [liked, setLiked] = useState(false)
+const Post = ({ post, postedBy }) => {
     const [user, setUser] = useState(null)
-    const [post,setPost]=useState(post_)
     const showToast = useShowToast()
     const navigate=useNavigate()
+    const [posts,setPosts]=useRecoilState(postsAtom)
+    const currentUser=useRecoilValue(userAtom)
 
     useEffect(() => {
         const getUser = async () => {
@@ -30,12 +33,26 @@ const Post = ({ post:post_, postedBy }) => {
         getUser()
     }, [showToast, postedBy])
     // if (!user) return null
-    const handleReplyInPost=(reply)=>{
-        setPost({...post,replies:[...post.replies,reply]})     
+    const handleDeletePost=async(e)=>{
+        e.preventDefault()
+        try {
+            if(!window.confirm("Are you sure you want to delete this post?")) return;
+            const res=await fetch(`/api/posts/${post._id}`,{
+                method:'DELETE'
+            })
+            const data=await res.json()
+            if(data.error){
+                return showToast("Error",data.error,"error")
+            }
+            showToast("Success","Post deleted","success")
+            setPosts(posts.filter((el)=>el._id!==post._id))
+        } catch (error) {
+            showToast("Error", error.message, "error")
+        }
     }
     return (
         <>
-            <Link to={"/markzukerberg/post/1"}>
+            <Link to={`/${user?.username}/post/${post?._id}`}>
                 <Flex gap={3} mb={4} py={5}>
                     <Flex flexDirection={'column'} alignItems={"center"}>
                         <Avatar size={'md'} name={user?.name} src={user?.profilePic}
@@ -94,7 +111,7 @@ const Post = ({ post:post_, postedBy }) => {
                             </Flex>
                             <Flex gap={4} alignItems={'center'} >
                                 <Text w={36} textAlign={"right"} fontSize={'xs'} color={'gray.light'}>{formatDistanceToNow(new Date(post?.createdAt))} ago</Text>
-                                <BsThreeDots />
+                                {currentUser?._id==user?._id && <DeleteIcon onClick={handleDeletePost}/>}
                             </Flex>
                         </Flex>
                         <Text fontSize={"sm"}>{post.text}</Text>
@@ -104,7 +121,7 @@ const Post = ({ post:post_, postedBy }) => {
                             </Box>
                         }
                         <Flex gap={3} my={1}>
-                            <Actions post={post} handleReplyInPost={handleReplyInPost} />
+                            <Actions post={post}/>
                         </Flex>
                     </Flex>
                 </Flex>

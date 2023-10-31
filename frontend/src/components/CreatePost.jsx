@@ -1,11 +1,13 @@
-import { AddIcon } from '@chakra-ui/icons'
+import { AddIcon, EditIcon } from '@chakra-ui/icons'
 import { Button, CloseButton, Flex, FormControl, Image, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, Textarea, useColorModeValue, useDisclosure } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
 import usePreviewImg from '../hooks/usePreviewImg'
 import { BsFillImageFill } from 'react-icons/bs'
-import { useRecoilValue } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import userAtom from '../atoms/userAtom'
 import useShowToast from '../hooks/useShowToast'
+import postsAtom from '../atoms/postsAtom'
+import { useParams } from 'react-router-dom'
 
 const MAX_CHAR=500
 const CreatePost = () => {
@@ -15,8 +17,10 @@ const CreatePost = () => {
     const [remainingChar,setRemainingChar]=useState(MAX_CHAR)
     const imageRef=useRef(null)
     const user=useRecoilValue(userAtom)
+    const [posts,setPosts]=useRecoilState(postsAtom)
     const showToast=useShowToast()
     const [loading,setLoading]=useState(false)
+    const {username}=useParams()
     const handleTextChange=(e)=>{
       const inputText=e.target.value;
       if(inputText.length>MAX_CHAR){
@@ -45,6 +49,9 @@ const CreatePost = () => {
             return;
            }
            showToast("Success","Post created successfully","success")
+           if(username==user?.username){
+            setPosts([...posts,data])
+           }
            onClose()
            setPostText("")
            setImgUrl("")
@@ -57,14 +64,7 @@ const CreatePost = () => {
     }
   return (
     <>
-      <Button
-      position={"fixed"}
-      bottom={10} right={10} leftIcon={<AddIcon/>}
-      bg={useColorModeValue("gray.300","gray.dark")}
-      onClick={onOpen}
-      >
-        Post
-      </Button>
+      <EditIcon cursor={"pointer"} fontSize={22} onClick={onOpen}/>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
