@@ -3,12 +3,12 @@ const { signupUser, loginUser, logoutUser, followUnfollowUser, updateUser, getUs
 const { protectRoute } = require("../middlewares/protectRoute")
 const userRouter=express.Router()
 
-userRouter.get("/profile/:username",getUserProfile)
+userRouter.get("/profile/:query",getUserProfile)
 userRouter.post("/signup",signupUser)
 userRouter.post("/login",loginUser)
 userRouter.post("/logout",logoutUser)
 userRouter.post("/follow/:id",protectRoute,followUnfollowUser)
-userRouter.post("/update/:id",protectRoute,updateUser)
+userRouter.put("/update/:id",protectRoute,updateUser)
 module.exports={
     userRouter
 }
