@@ -5,12 +5,16 @@ import { useParams } from 'react-router-dom'
 import useShowToast from '../hooks/useShowToast'
 import Loader from '../components/Loader'
 import NotFound from '../components/NotFound'
+import { Heading } from '@chakra-ui/react'
+import Post from '../components/Post'
 
 const UserPage = () => {
   const [user,setUser]=useState(null)
   const showToast=useShowToast()
   const {username}=useParams()
   const [loading,setLoading]=useState(true)
+  const [posts,setPosts]=useState([])
+  const [fetchingPosts,setFetchingPosts]=useState(false)
 
   useEffect(()=>{
     const getUser=async()=>{
@@ -28,6 +32,25 @@ const UserPage = () => {
         setLoading(false)
       }
     }
+
+    const getPosts=async()=>{
+      setFetchingPosts(true)
+      try {
+        const res=await fetch(`/api/posts/user/${username}`)
+        const data=await res.json()
+        if(data.error){
+          return showToast("Error",data.error,"error")
+        }
+        setPosts(data)
+        console.log(data)
+      } catch (error) {
+        showToast("Error",error,"error")
+      }finally{
+        setFetchingPosts(false)
+      }
+    }
+    getPosts()
+
     getUser()
 
   },[username,showToast])
@@ -41,10 +64,21 @@ const UserPage = () => {
   return (
     <>
       <UserHeader user={user}/>
-      <UserPost postImg='/post1.png' likes={234} replies={57} postTitle="Hi let's start using thread."/>
-      <UserPost postImg='/post2.png' likes={234} replies={57} postTitle="This is a nice tutorial"/>
-      <UserPost postImg='/post3.png' likes={234} replies={57} postTitle="How are you all today?"/>
-      <UserPost likes={234} replies={57} postTitle="Testing thread without photo."/>
+      {
+        fetchingPosts && <Loader/>
+      }
+      {
+        !fetchingPosts && posts?.length==0 && (
+          <Heading mt={10} textAlign={"center"}>No any post found!</Heading>
+        )
+      }
+      {
+        !fetchingPosts && posts?.length>0 && (
+          posts?.map((post)=>(
+            <Post key={post._id} post={post} postedBy={post.postedBy} />
+          ))
+        )
+      }
     </>
   )
 }
