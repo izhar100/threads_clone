@@ -31,7 +31,7 @@ const Post = ({ post, postedBy }) => {
             }
         }
         getUser()
-    }, [showToast, postedBy])
+    }, [showToast, postedBy,setUser])
     // if (!user) return null
     const handleDeletePost=async(e)=>{
         e.preventDefault()
@@ -104,7 +104,7 @@ const Post = ({ post, postedBy }) => {
                                 <Text fontSize={'sm'} fontWeight={"bold"}
                                  onClick={(e)=>{
                                     e.preventDefault();
-                                    navigate(`/${user.username}`)
+                                    navigate(`/${user?.username}`)
                                  }}
                                 >{user?.name}</Text>
                                 <Image src='/verified.png' w={4} h={4} ml={1} />

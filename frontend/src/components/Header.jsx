@@ -62,7 +62,7 @@ const Header = () => {
         }
         {
           user ?
-            <RxAvatar size={24} style={{ cursor: "pointer" }} onClick={() => navigate(`/${user.username}`)} />
+            <RxAvatar size={24} style={{ cursor: "pointer" }} onClick={() => navigate(`/${user?.username}`)} />
             :
             <Button onClick={() => {
               setAuth("signup")

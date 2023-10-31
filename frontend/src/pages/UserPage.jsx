@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import UserHeader from '../components/UserHeader'
-import UserPost from '../components/UserPost'
+// import UserPost from '../components/UserPost'
 import { useParams } from 'react-router-dom'
 import useShowToast from '../hooks/useShowToast'
 import Loader from '../components/Loader'
@@ -22,6 +22,7 @@ const UserPage = () => {
 
     const getPosts=async()=>{
       setFetchingPosts(true)
+      setPosts([])
       try {
         const res=await fetch(`/api/posts/user/${username}`)
         const data=await res.json()
@@ -32,6 +33,7 @@ const UserPage = () => {
         console.log(data)
       } catch (error) {
         showToast("Error",error,"error")
+        setPosts([])
       }finally{
         setFetchingPosts(false)
       }
