@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom'
 import Actions from './Actions'
 
 const UserPost = ({ postImg, likes, replies, postTitle }) => {
-    const [liked, setLiked] = useState(false)
     return (
         <>
             <Link to={"/markzukerberg/post/1"}>
@@ -61,7 +60,7 @@ const UserPost = ({ postImg, likes, replies, postTitle }) => {
                             </Box>
                         }
                         <Flex gap={3} my={1}>
-                            <Actions liked={liked} setLiked={setLiked} />
+                            <Actions post={post} />
                         </Flex>
                         <Flex gap={2} alignItems={"center"}>
                             <Text fontSize={'sm'} color={'gray.light'}>{replies} replies</Text>
