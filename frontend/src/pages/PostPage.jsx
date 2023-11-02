@@ -18,18 +18,18 @@ const PostPage = () => {
     const { loading, user } = getUserProfile()
     const { colorMode } = useColorMode()
     // const [post, setPost] = useState(null)
-    const [posts,setPosts]=useRecoilState(postsAtom)
+    const [posts, setPosts] = useRecoilState(postsAtom)
     const showToast = useShowToast()
     const { pid } = useParams()
     const currentUser = useRecoilValue(userAtom)
     const navigate = useNavigate()
-    const currentPost=posts[0]
+    const currentPost = posts[0]
 
     useEffect(() => {
         const getPost = async () => {
             try {
-                const res = await fetch(`${api}/posts/${pid}`,{
-                    headers:{
+                const res = await fetch(`${api}/posts/${pid}`, {
+                    headers: {
                         'Authorization': `Bearer ${localStorage.getItem("jwt")}`
                     }
                 })
@@ -44,14 +44,14 @@ const PostPage = () => {
             }
         }
         getPost()
-    }, [pid, showToast,setPosts])
+    }, [pid, showToast, setPosts])
 
     const handleDeletePost = async () => {
         try {
             if (!window.confirm("Are you sure you want to delete this post?")) return;
             const res = await fetch(`${api}/posts/${currentPost._id}`, {
                 method: 'DELETE',
-                headers:{
+                headers: {
                     'Authorization': `Bearer ${localStorage.getItem("jwt")}`
                 }
             })
@@ -74,8 +74,7 @@ const PostPage = () => {
     if (!currentPost) return null
     return (
         <Box>
-            <Flex>
-                <Flex w={'full'} alignItems={'center'} gap={3}>
+                {/* <Flex w={'full'} alignItems={'center'} gap={3}>
                     <Avatar src={user?.profilePic} size={'md'} name={user?.name} />
                     <Flex>
                         <Text fontSize={'sm'} fontWeight={'bold'}>{user?.name}</Text>
@@ -85,8 +84,25 @@ const PostPage = () => {
                 <Flex gap={4} alignItems={'center'} >
                     <Text w={36} textAlign={"right"} fontSize={'xs'} color={'gray.light'}>{formatDistanceToNow(new Date(currentPost?.createdAt))} ago</Text>
                     {currentUser?._id == user?._id && <DeleteIcon cursor={"pointer"} onClick={handleDeletePost} />}
+                </Flex> */}
+                <Flex gap={4}>
+                    <Avatar src={user?.profilePic} size={'md'} name={user?.name} />
+                    <Flex justifyContent={"space-between"} w={"100%"} mt={-2} >
+                        <Flex alignItems={"center"} w={"45%"} >
+                            <Text fontSize={'sm'} fontWeight={"bold"}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    navigate(`/${user?.username}`)
+                                }}
+                            >{user?.name}</Text>
+                            <Image display={user?.username == "ezhar" ? "inline" : "none"} src='/verified.png' w={4} h={4} ml={1} />
+                        </Flex>
+                        <Flex w={"55%"} justifyContent={"right"} gap={4} alignItems={'center'} >
+                            <Text w={36} textAlign={"right"} fontSize={'xs'} color={'gray.light'}>{formatDistanceToNow(new Date(currentPost?.createdAt))} ago</Text>
+                            {currentUser?._id == user?._id && <DeleteIcon onClick={handleDeletePost} />}
+                        </Flex>
+                    </Flex>
                 </Flex>
-            </Flex>
             <Text my={3}>{currentPost?.text}</Text>
             <Box display={currentPost?.img ? "block" : "none"} borderRadius={6} overflow={'hidden'} border={"1px solid"} borderColor={"gray.light"}>
                 <Image src={currentPost?.img} w={"full"} />

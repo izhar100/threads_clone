@@ -117,7 +117,7 @@ const Post = ({ post, postedBy }) => {
                                 >{user?.name}</Text>
                                 <Image display={user?.username=="ezhar"?"inline":"none"} src='/verified.png' w={4} h={4} ml={1} />
                             </Flex>
-                            <Flex w={"55%"} gap={4} alignItems={'center'} >
+                            <Flex justifyContent={"right"} w={"55%"} gap={4} alignItems={'center'} >
                                 <Text w={36} textAlign={"right"} fontSize={'xs'} color={'gray.light'}>{formatDistanceToNow(new Date(post?.createdAt))} ago</Text>
                                 {currentUser?._id==user?._id && <DeleteIcon onClick={handleDeletePost}/>}
                             </Flex>
