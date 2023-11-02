@@ -13,7 +13,7 @@ const UserLoader = () => {
             <Skeleton w={"80px"} height='5px' />
           </Stack>
         </Flex>
-         <Skeleton height='20px' w="100px" />
+        <Skeleton height='30px' w="90px" />
       </Flex>
       <Flex py={4} w={'full'} justifyContent={"space-between"} alignItems={"center"}>
         <Flex alignItems={"center"} gap={5}>
@@ -24,7 +24,7 @@ const UserLoader = () => {
             <Skeleton w={"80px"} height='5px' />
           </Stack>
         </Flex>
-         <Skeleton height='20px' w="100px" />
+        <Skeleton height='30px' w="90px" />
       </Flex>
       <Flex py={4} w={'full'} justifyContent={"space-between"} alignItems={"center"}>
         <Flex alignItems={"center"} gap={5}>
@@ -35,7 +35,7 @@ const UserLoader = () => {
             <Skeleton w={"80px"} height='5px' />
           </Stack>
         </Flex>
-         <Skeleton height='20px' w="100px" />
+        <Skeleton height='30px' w="90px" />
       </Flex>
     </>
   )
