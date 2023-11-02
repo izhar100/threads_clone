@@ -66,7 +66,7 @@ export default function SignupCard() {
       align={'center'}
       justify={'center'}
       >
-      <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
+      <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={1}>
         <Stack align={'center'}>
           <Heading fontSize={'4xl'} textAlign={'center'}>
             Sign up
@@ -76,7 +76,7 @@ export default function SignupCard() {
           rounded={'lg'}
           bg={useColorModeValue('white', 'gray.dark')}
           boxShadow={'lg'}
-          p={8}>
+          p={6}>
           <Stack spacing={4}>
             <HStack>
               <Box>

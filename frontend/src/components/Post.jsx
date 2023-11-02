@@ -107,8 +107,8 @@ const Post = ({ post, postedBy }) => {
                         </Box>
                     </Flex>
                     <Flex flex={1} flexDirection={'column'} gap={2}>
-                        <Flex justifyContent={'space-between'} w={'full'}>
-                            <Flex alignItems={"center"} w={"full"}>
+                        <Flex justifyContent={"space-between"} w={"100%"} >
+                            <Flex alignItems={"center"} w={"45%"} >
                                 <Text fontSize={'sm'} fontWeight={"bold"}
                                  onClick={(e)=>{
                                     e.preventDefault();
@@ -117,7 +117,7 @@ const Post = ({ post, postedBy }) => {
                                 >{user?.name}</Text>
                                 <Image display={user?.username=="ezhar"?"inline":"none"} src='/verified.png' w={4} h={4} ml={1} />
                             </Flex>
-                            <Flex gap={4} alignItems={'center'} >
+                            <Flex w={"55%"} gap={4} alignItems={'center'} >
                                 <Text w={36} textAlign={"right"} fontSize={'xs'} color={'gray.light'}>{formatDistanceToNow(new Date(post?.createdAt))} ago</Text>
                                 {currentUser?._id==user?._id && <DeleteIcon onClick={handleDeletePost}/>}
                             </Flex>

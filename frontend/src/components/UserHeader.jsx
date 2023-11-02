@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Flex, Menu, MenuButton, MenuItem, MenuList, Portal, Text, VStack, useColorMode, useToast } from '@chakra-ui/react'
+import { Avatar, Box, Button, Flex, Image, Menu, MenuButton, MenuItem, MenuList, Portal, Text, VStack, useColorMode, useToast } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { BsInstagram } from 'react-icons/bs'
@@ -21,6 +21,7 @@ const UserHeader = ({user}) => {
             showToast("Success",'URL copied',"success")
         })
     }
+    console.log("user inside userheader:",user)
 
     const handleFollowUnfollow=async()=>{
         if(!currentUser){
@@ -60,17 +61,19 @@ const UserHeader = ({user}) => {
         <VStack gap={4} alignItems={"start"}>
             <Flex justifyContent={"space-between"} w={"full"}>
                 <Box>
-                    <Text fontSize={"2xl"} fontWeight={"bold"}>{user?.name}</Text>
+                    <Flex alignItems={"center"}><Text fontSize={"2xl"} fontWeight={"bold"}>{user?.name}</Text>
+                    <Image display={user?.username=="ezhar"?"inline":"none"} src='/verified.png' w={4} h={4} ml={2} />
+                    </Flex>
                     <Flex gap={2} alignItems={"center"}>
-                        <Text fontSize={"sm"}>{user?.username}</Text>
-                        <Text fontSize={"xs"} bg={colorMode=="dark"?"gray.dark":"#e9e9e9"} color={"gray.light"} p={1} borderRadius={'full'}>threads.net</Text>
+                        <Text fontSize={"sm"}>@{user?.username}</Text>
+                        <Text fontSize={"xs"} bg={colorMode=="dark"?"gray.dark":"#a67d7d"} color={"gray.light"} p={1} borderRadius={'full'}>threads.net</Text>
                     </Flex>
                 </Box>
                 <Box>
                     <Avatar name={user?.name} src={user?.profilePic} size={{
                         base:"md",
                         md:"xl"
-                    }} bg={"gray.dark"} />
+                    }} />
                 </Box>
             </Flex>
             <Text>{user?.bio}</Text>

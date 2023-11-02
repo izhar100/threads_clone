@@ -79,7 +79,7 @@ const PostPage = () => {
                     <Avatar src={user?.profilePic} size={'md'} name={user?.name} />
                     <Flex>
                         <Text fontSize={'sm'} fontWeight={'bold'}>{user?.name}</Text>
-                        <Image src='/verified.png' w={4} h={4} ml={4} />
+                        <Image display={user?.username=="ezhar"?"inline":"none"} src='/verified.png' w={4} h={4} ml={4} />
                     </Flex>
                 </Flex>
                 <Flex gap={4} alignItems={'center'} >

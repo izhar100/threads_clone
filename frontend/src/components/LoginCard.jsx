@@ -65,7 +65,7 @@ import { api } from '../api'
         align={'center'}
         justify={'center'}
         >
-        <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
+        <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={1}>
           <Stack align={'center'}>
             <Heading fontSize={'4xl'} textAlign={'center'}>
               Login
@@ -75,7 +75,7 @@ import { api } from '../api'
             rounded={'lg'}
             bg={useColorModeValue('white', 'gray.dark')}
             boxShadow={'lg'}
-            p={8}
+            p={6}
             w={{
                 base: 'full',
                 sm:"400px"

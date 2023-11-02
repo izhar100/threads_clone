@@ -16,7 +16,7 @@ const UserCard = ({user,lastUser}) => {
                                 <Text mt={"-2px"} fontSize={'xs'} color={"gray.light"}>@{user.username}</Text>
                                 <Text mt={"-2px"} fontSize={'xs'} color={"gray.light"}>{user.followers.length} followers</Text>
                             </Box>
-                            <Image display={user.username=="ezhar"?"inline":"none"} src='/verified.png' w={4} h={4} ml={4} mt={1} />
+                            <Image display={user.username=="ezhar"?"inline":"none"} src='/verified.png' w={4} h={4} ml={2} mt={1} />
                         </Flex>
                     </Flex>
                     <Button border={"1px solid #c4c4c4"} px={5} size={"sm"}>View Profile</Button>
