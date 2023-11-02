@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import useShowToast from './useShowToast'
+import { api } from '../api'
 
 const getUserProfile = () => {
   const [user,setUser]=useState(null)

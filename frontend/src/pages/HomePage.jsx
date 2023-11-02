@@ -5,6 +5,7 @@ import Loader from '../components/Loader'
 import Post from '../components/Post'
 import { useRecoilState } from 'recoil'
 import postsAtom from '../atoms/postsAtom'
+import { api } from '../api'
 
 const HomePage = () => {
   const [posts,setPosts]=useRecoilState(postsAtom)
@@ -15,8 +16,9 @@ const HomePage = () => {
       setLoading(true)
       setPosts([])
       try {
-        const res=await fetch(`api/posts/feed`)
+        const res=await fetch(`/api/posts/feed`)
         const data=await res.json()
+        console.log(data)
         if(data.error){
           showToast("Error",data.error,"error")
           return;

@@ -6,6 +6,7 @@ import { CgMoreO } from 'react-icons/cg'
 import useShowToast from '../hooks/useShowToast'
 import { useRecoilValue } from 'recoil'
 import userAtom from '../atoms/userAtom'
+import { api } from '../api'
 
 const UserHeader = ({user}) => {
     const {colorMode}=useColorMode()
@@ -74,10 +75,10 @@ const UserHeader = ({user}) => {
             <Text>{user?.bio}</Text>
             {
                 currentUser?._id==user?._id ? (
-                    <Button size={"sm"} onClick={()=>navigate("/update")}>Update Profile</Button>
+                    <Button border={"1px solid #c4c4c4"} size={"sm"} onClick={()=>navigate("/update")}>Update Profile</Button>
                 )
                 :
-                <Button size={"sm"} onClick={handleFollowUnfollow} isLoading={updating}>{following?"Unfollow":"Follow"}</Button>
+                <Button border={"1px solid #c4c4c4"} size={"sm"} onClick={handleFollowUnfollow} isLoading={updating}>{following?"Unfollow":"Follow"}</Button>
             }
             <Flex w={'full'} justifyContent={"space-between"}>
                 <Flex gap={2} alignItems={"center"}>

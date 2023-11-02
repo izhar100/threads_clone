@@ -15,6 +15,7 @@ import userAtom from '../atoms/userAtom'
 import { useRef, useState } from 'react'
 import usePreviewImg from '../hooks/usePreviewImg'
 import useShowToast from '../hooks/useShowToast'
+import { api } from '../api'
 
 export default function UpdateProfilepage() {
   const [user, setUser] = useRecoilState(userAtom)

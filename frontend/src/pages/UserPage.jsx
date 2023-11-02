@@ -10,6 +10,7 @@ import Post from '../components/Post'
 import getUserProfile from '../hooks/getUserProfile'
 import { useRecoilState } from 'recoil'
 import postsAtom from '../atoms/postsAtom'
+import { api } from '../api'
 
 const UserPage = () => {
   const {loading,user}=getUserProfile()

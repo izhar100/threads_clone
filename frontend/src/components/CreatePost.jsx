@@ -8,6 +8,7 @@ import userAtom from '../atoms/userAtom'
 import useShowToast from '../hooks/useShowToast'
 import postsAtom from '../atoms/postsAtom'
 import { useLocation, useParams } from 'react-router-dom'
+import { api } from '../api'
 
 const MAX_CHAR=500
 const CreatePost = () => {
@@ -37,7 +38,7 @@ const CreatePost = () => {
         if(loading) return;
         setLoading(true)
        try {
-        const res=await fetch('/api/posts/create',{
+        const res=await fetch(`/api/posts/create`,{
             method:'POST',
             headers:{
                 'Content-Type':'application/json'

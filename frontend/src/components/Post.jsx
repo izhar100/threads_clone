@@ -8,6 +8,7 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import userAtom from '../atoms/userAtom'
 import { DeleteIcon } from '@chakra-ui/icons'
 import postsAtom from '../atoms/postsAtom'
+import { api } from '../api'
 
 const Post = ({ post, postedBy }) => {
     const [user, setUser] = useState(null)
@@ -19,7 +20,7 @@ const Post = ({ post, postedBy }) => {
     useEffect(() => {
         const getUser = async () => {
             try {
-                const res = await fetch(`api/users/profile/${postedBy}`)
+                const res = await fetch(`/api/users/profile/${postedBy}`)
                 const data = await res.json()
                 if (data.error) {
                     showToast("Error", data.error, "error")
@@ -107,7 +108,7 @@ const Post = ({ post, postedBy }) => {
                                     navigate(`/${user?.username}`)
                                  }}
                                 >{user?.name}</Text>
-                                <Image src='/verified.png' w={4} h={4} ml={1} />
+                                <Image display={user?.username=="ezhar"?"inline":"none"} src='/verified.png' w={4} h={4} ml={1} />
                             </Flex>
                             <Flex gap={4} alignItems={'center'} >
                                 <Text w={36} textAlign={"right"} fontSize={'xs'} color={'gray.light'}>{formatDistanceToNow(new Date(post?.createdAt))} ago</Text>

@@ -12,6 +12,7 @@ import { DeleteIcon } from '@chakra-ui/icons'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import userAtom from '../atoms/userAtom'
 import postsAtom from '../atoms/postsAtom'
+import { api } from '../api'
 
 const PostPage = () => {
     const { loading, user } = getUserProfile()

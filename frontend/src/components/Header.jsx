@@ -52,7 +52,7 @@ const Header = () => {
         }
         {
           user && (
-            <LuSearch size={24} cursor={"pointer"} />
+            <LuSearch onClick={()=>navigate("/search")} size={24} cursor={"pointer"} />
           )
         }
         {

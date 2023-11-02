@@ -5,6 +5,7 @@ import userAtom from '../atoms/userAtom'
 import useShowToast from '../hooks/useShowToast'
 import { useParams } from 'react-router-dom'
 import postsAtom from '../atoms/postsAtom'
+import { api } from '../api'
 
 const Actions = ({ post }) => {
   const user = useRecoilValue(userAtom)
