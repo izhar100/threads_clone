@@ -99,7 +99,7 @@ const PostPage = () => {
                         </Flex>
                         <Flex w={"55%"} justifyContent={"right"} gap={4} alignItems={'center'} >
                             <Text w={36} textAlign={"right"} fontSize={'xs'} color={'gray.light'}>{formatDistanceToNow(new Date(currentPost?.createdAt))} ago</Text>
-                            {currentUser?._id == user?._id && <DeleteIcon onClick={handleDeletePost} />}
+                            {currentUser?._id == user?._id && <DeleteIcon onClick={handleDeletePost} cursor={"pointer"} />}
                         </Flex>
                     </Flex>
                 </Flex>
