@@ -28,7 +28,11 @@ const PostPage = () => {
     useEffect(() => {
         const getPost = async () => {
             try {
-                const res = await fetch(`/api/posts/${pid}`)
+                const res = await fetch(`${api}/posts/${pid}`,{
+                    headers:{
+                        'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+                    }
+                })
                 const data = await res.json()
                 if (data.error) {
                     return showToast("Error", data.error, "error")
@@ -45,8 +49,11 @@ const PostPage = () => {
     const handleDeletePost = async () => {
         try {
             if (!window.confirm("Are you sure you want to delete this post?")) return;
-            const res = await fetch(`/api/posts/${currentPost._id}`, {
-                method: 'DELETE'
+            const res = await fetch(`${api}/posts/${currentPost._id}`, {
+                method: 'DELETE',
+                headers:{
+                    'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+                }
             })
             const data = await res.json()
             if (data.error) {

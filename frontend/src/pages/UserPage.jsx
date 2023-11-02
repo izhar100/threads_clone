@@ -25,7 +25,11 @@ const UserPage = () => {
       setFetchingPosts(true)
       setPosts([])
       try {
-        const res=await fetch(`/api/posts/user/${username}`)
+        const res=await fetch(`${api}/posts/user/${username}`,{
+          headers:{
+            'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+          }
+        })
         const data=await res.json()
         if(data.error){
           return showToast("Error",data.error,"error")

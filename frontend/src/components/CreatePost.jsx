@@ -38,10 +38,11 @@ const CreatePost = () => {
         if(loading) return;
         setLoading(true)
        try {
-        const res=await fetch(`/api/posts/create`,{
+        const res=await fetch(`${api}/posts/create`,{
             method:'POST',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization': `Bearer ${localStorage.getItem("jwt")}`
             },
             body:JSON.stringify({postedBy:user._id,text:postText,img:imgUrl})
            })

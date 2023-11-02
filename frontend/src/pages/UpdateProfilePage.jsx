@@ -36,10 +36,11 @@ export default function UpdateProfilepage() {
     if(updating) return;
     setUpdating(true)
     try {
-      const res=await fetch(`/api/users/update/${user._id}`,{
+      const res=await fetch(`${api}/users/update/${user._id}`,{
         method:'PUT',
         headers:{
-          'Content-Type':'application/json'
+          'Content-Type':'application/json',
+          'Authorization': `Bearer ${localStorage.getItem("jwt")}` 
         },
         body:JSON.stringify({...inputs,profilePic:imgUrl})
       })

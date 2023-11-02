@@ -16,7 +16,12 @@ const HomePage = () => {
       setLoading(true)
       setPosts([])
       try {
-        const res=await fetch(`/api/posts/feed`)
+        const res=await fetch(`${api}/posts/feed`,{
+          method:'GET',
+          headers:{
+            'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+          }
+        })
         const data=await res.json()
         console.log(data)
         if(data.error){

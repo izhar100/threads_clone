@@ -30,10 +30,11 @@ const UserHeader = ({user}) => {
         if(updating) return;
         setUpdating(true)
         try {
-            const res = await fetch(`/api/users/follow/${user?._id}`,{
+            const res = await fetch(`${api}/users/follow/${user?._id}`,{
                 method:'POST',
                 headers:{
-                    'Content-Type':'application/json'
+                    'Content-Type':'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem("jwt")}`
                 }
             })
             const data=await res.json()

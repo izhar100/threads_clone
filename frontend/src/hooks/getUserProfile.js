@@ -11,7 +11,11 @@ const getUserProfile = () => {
   useEffect(()=>{
     const getUser=async()=>{
         try {
-          const res=await fetch(`/api/users/profile/${username}`)
+          const res=await fetch(`${api}/users/profile/${username}`,{
+            headers:{
+              'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+            }
+          })
           const data=await res.json()
           if(data.error){
             showToast("Error",data.error,"error")

@@ -13,7 +13,7 @@ const LogoutButton = () => {
     const navigate=useNavigate()
     const handleLogout=async()=>{
         try {
-            const res=await fetch(`/api/users/logout`,{
+            const res=await fetch(`${api}/users/logout`,{
                 method:'POST',
                 headers:{
                     "Content-Type":"application/json",
@@ -25,6 +25,7 @@ const LogoutButton = () => {
                 showToast("error",data.error,"error")
                 return;
             }
+            localStorage.removeItem("jwt")
             localStorage.removeItem("user-threads");
             setUser(null)
             navigate("/auth")

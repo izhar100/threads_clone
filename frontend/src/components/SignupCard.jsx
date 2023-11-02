@@ -40,7 +40,7 @@ export default function SignupCard() {
     if(loading) return
     setLoading(true)
     try {
-        const res=await fetch(`/api/users/signup`,{
+        const res=await fetch(`${api}/users/signup`,{
             method:"POST",
             headers:{
                 "Content-Type":"application/json"
@@ -52,6 +52,7 @@ export default function SignupCard() {
             showToast("error",data.error,"error")
             return;
         }
+        localStorage.setItem("jwt",data.token)
         localStorage.setItem('user-threads',JSON.stringify(data))
         setUser(data)
     } catch (err) {

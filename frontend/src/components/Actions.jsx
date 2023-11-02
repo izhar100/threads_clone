@@ -25,10 +25,11 @@ const Actions = ({ post }) => {
     if (isLiking) return;
     setIsLiking(true)
     try {
-      const res = await fetch(`/api/posts/like/${post._id}`, {
+      const res = await fetch(`${api}/posts/like/${post._id}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem("jwt")}`
         }
       })
       const data = await res.json()
@@ -66,10 +67,11 @@ const Actions = ({ post }) => {
     if(isReplying) return;
     setIsReplying(true)
     try {
-      const res=await fetch(`/api/posts/reply/${post._id}`,{
+      const res=await fetch(`${api}/posts/reply/${post._id}`,{
         method:'PUT',
         headers:{
-          'Content-Type':'application/json'
+          'Content-Type':'application/json',
+          'Authorization': `Bearer ${localStorage.getItem("jwt")}`
         },
         body:JSON.stringify({text:reply})
       })

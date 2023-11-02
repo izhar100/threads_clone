@@ -36,10 +36,10 @@ import { api } from '../api'
         if(loading) return;
         setLoading(true)
         try {
-            const res=await fetch(`/api/users/login`,{
+            const res=await fetch(`${api}/users/login`,{
                 method: "POST",
                 headers:{
-                    "Content-Type":"application/json"
+                    "Content-Type":"application/json",
                 },
                 body: JSON.stringify(inputs)
             })
@@ -49,6 +49,7 @@ import { api } from '../api'
                 showToast("error",data.error,"error")
                 return
             }
+            localStorage.setItem("jwt",data.token)
             localStorage.setItem('user-threads',JSON.stringify(data))
             setUser(data)
             

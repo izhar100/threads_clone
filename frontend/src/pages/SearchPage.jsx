@@ -20,7 +20,11 @@ const SearchPage = () => {
             setUsers([])
             setLoading(true)
             try {
-                const res = await fetch(`/api/users?search=${name}`)
+                const res = await fetch(`${api}/users?search=${name}`,{
+                    headers:{
+                        'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+                    }
+                })
                 const data = await res.json()
                 setUsers(data)
             } catch (error) {
