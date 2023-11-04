@@ -1,1 +1,1 @@
-export const api="https://threadsbackend.onrender.com/api"
+export const api="https://threads-backend-vercel.vercel.app/api"

@@ -14,7 +14,6 @@ import SearchPage from "./pages/SearchPage"
 
 function App() {
   const user=useRecoilValue(userAtom)
-  console.log(user)
 
   return (
     <>

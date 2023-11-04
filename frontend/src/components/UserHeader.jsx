@@ -21,7 +21,6 @@ const UserHeader = ({user}) => {
             showToast("Success",'URL copied',"success")
         })
     }
-    console.log("user inside userheader:",user)
 
     const handleFollowUnfollow=async()=>{
         if(!currentUser){
