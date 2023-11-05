@@ -11,7 +11,7 @@ import { useLocation, useParams } from 'react-router-dom'
 import { api } from '../api'
 
 const MAX_CHAR=500
-const CreatePost = () => {
+const CreatePost = ({openModal,setOpenModel}) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const {handleImageChange,imgUrl,setImgUrl}=usePreviewImg()
     const [postText,setPostText]=useState("")
@@ -56,6 +56,9 @@ const CreatePost = () => {
            }
            showToast("Success","Post created successfully","success")
            onClose()
+           if(typeof(setOpenModel)=="function"){
+            setOpenModel(false)
+           }
            setPostText("")
            setImgUrl("")
        } catch (error) {
@@ -65,14 +68,24 @@ const CreatePost = () => {
         onClose()
        }
     }
+    // boxShadow={ "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"}
   return (
     <>
-      <EditIcon cursor={"pointer"} fontSize={22} onClick={onOpen}/>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Button px={1} borderRadius={50} bgColor={"#009dff39"} position={"fixed"} bottom={4} right={4} onClick={onOpen}
+      boxShadow={ "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"}>
+      <AddIcon cursor={"pointer"} fontSize={22}
+      />
+      </Button>
+      <Modal isOpen={openModal || isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Create Post</ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton onClick={()=>{
+            if(typeof(setOpenModel)=="function"){
+              setOpenModel(false)
+            }
+            onClose()
+          }} />
           <ModalBody>
           <FormControl>
             <Textarea

@@ -1,4 +1,4 @@
-import { Button, Flex, Heading } from '@chakra-ui/react'
+import { Avatar, Box, Button, Flex, Heading, Input, Text } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import useShowToast from '../hooks/useShowToast'
 import Loader from '../components/Loader'
@@ -6,10 +6,12 @@ import Post from '../components/Post'
 import { useRecoilState } from 'recoil'
 import postsAtom from '../atoms/postsAtom'
 import { api } from '../api'
+import CreatePost from '../components/CreatePost'
 
 const HomePage = () => {
   const [posts,setPosts]=useRecoilState(postsAtom)
   const [loading,setLoading]=useState(true)
+  const [openModal,setOpenModel]=useState(false)
   const showToast=useShowToast()
   useEffect(()=>{
     const getFeedPost=async()=>{
@@ -37,8 +39,20 @@ const HomePage = () => {
     }
     getFeedPost()
   },[showToast,setPosts])
+  
   return (
     <>
+    <Flex alignItems={"center"} mb={3} pb={2} gap={2} borderBottom={"1px solid #bdbdbd"}>
+      <Avatar src='' name='Ezhar Ashraf'/>
+      {/* <Input disabled placeholder='Start a thread...' onClick={()=>setOpenModel(true)}/> */}
+      <Box w={"full"}>
+        <Text color={"#7d7d7d"} fontWeight={"500"} onClick={()=>setOpenModel(true)} mt={"10px"}>Start a thread...</Text>
+      </Box>
+      <Button color={"white"} bgColor={"gray.light"}>POST</Button>
+    </Flex>
+    <Box display={"none"}>
+    <CreatePost openModal={openModal} setOpenModel={setOpenModel}/>
+    </Box>
     {!loading && posts.length==0 && <Heading textAlign={"center"}>Follow some user to see the feed</Heading>}
       {
         loading && (
