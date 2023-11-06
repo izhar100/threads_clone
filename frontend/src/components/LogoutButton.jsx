@@ -19,14 +19,14 @@ const LogoutButton = () => {
                     "Content-Type":"application/json",
                 }
             })
-            const data=await res;
-            console.log(data)
+            const data=await res.json();
             if(data.error){
                 showToast("error",data.error,"error")
                 return;
             }
             localStorage.removeItem("jwt")
             localStorage.removeItem("user-threads");
+            localStorage.removeItem("selectedConversation")
             setUser(null)
             navigate("/auth")
             
