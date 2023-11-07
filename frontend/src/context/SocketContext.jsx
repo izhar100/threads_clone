@@ -15,17 +15,33 @@ export const SocketContextProvider=({children})=>{
     const user=useRecoilValue(userAtom)
     const [onlineUsers,setOnlineUsers]=useState([])
     useEffect(()=>{
-        const socket=io("https://threads-backend-vercel.vercel.app",{
-            query:{
-                userId:user?._id
-            }
-        })
-        setSocket(socket)
+        // const socket=io("http://localhost:8000",{
+        //     query:{
+        //         userId:user?._id
+        //     }
+        // })
+        // setSocket(socket)
         
-        socket.on("getOnlineUsers",(users)=>{
-            setOnlineUsers(users)
-        })
-        return ()=>socket && socket.close()
+        // socket.on("getOnlineUsers",(users)=>{
+        //     setOnlineUsers(users)
+        // })
+        // return ()=>socket && socket.close()
+        // Ensure socket is created only once, and don't recreate it on re-renders
+       if (user) {
+        const socket = io("http://localhost:8000", {
+          query: {
+            userId: user?._id,
+          },
+        });
+        setSocket(socket);
+  
+        socket.on("getOnlineUsers", (users) => {
+          setOnlineUsers(users);
+        });
+  
+        // Close the socket when the component unmounts
+        return () => socket.close();
+      }
     },[user?._id])
 
 

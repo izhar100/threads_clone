@@ -70,7 +70,7 @@ const MessageContainer = () => {
         </Flex>
         <Box w={"full"} borderBottom="1px solid gray"></Box>
         <Flex flexDir={"column"} gap={4} my={4}
-          height={"70vh"} overflowY={"auto"}
+          height={"68vh"} overflowY={"auto"}
         >
           {
             loading && (
