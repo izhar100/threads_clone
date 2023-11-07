@@ -28,7 +28,7 @@ export const SocketContextProvider=({children})=>{
         // return ()=>socket && socket.close()
         // Ensure socket is created only once, and don't recreate it on re-renders
        if (user) {
-        const socket = io("https://threads-backend-vercel.vercel.app", {
+        const socket = io("https://threadsbackend.onrender.com", {
           query: {
             userId: user?._id,
           },
