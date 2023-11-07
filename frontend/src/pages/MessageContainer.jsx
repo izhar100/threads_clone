@@ -1,5 +1,5 @@
 import { Avatar, Box, Divider, Flex, Image, Skeleton, SkeletonCircle, Text, useColorModeValue } from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Message from '../components/Message'
 import MessageInput from '../components/MessageInput'
 import { useRecoilValue } from 'recoil'
@@ -7,6 +7,7 @@ import { selectedConversationAtom } from '../atoms/messagesAtom'
 import useShowToast from '../hooks/useShowToast'
 import { api } from '../api'
 import userAtom from '../atoms/userAtom'
+import { useSocket } from '../context/SocketContext'
 
 const MessageContainer = () => {
   const selectedConversation = useRecoilValue(selectedConversationAtom)
@@ -14,6 +15,8 @@ const MessageContainer = () => {
   const showToast = useShowToast()
   const [loading,setLoading]=useState(false)
   const [messages,setMessages]=useState([])
+  const {socket}=useSocket()
+  const messageEndRef=useRef(null)
 
   useEffect(() => {
     const getMessage = async () => {
@@ -40,6 +43,19 @@ const MessageContainer = () => {
     }
     getMessage()
   }, [showToast])
+
+  useEffect(()=>{
+    socket?.on("newMessage",(message)=>{
+      if(selectedConversation?._id==message.conversationId){
+        setMessages((preMessages)=>[...preMessages,message])
+      }
+    })
+    return ()=>socket?.off("newMessage")
+  },[socket])
+
+  useEffect(()=>{
+    messageEndRef.current?.scrollIntoView({behavior:"smooth"})
+  },[messages])
   return (
     <>
       <Flex flex={"70"} bg={useColorModeValue("gray.200", "gray.dark")}
@@ -75,7 +91,11 @@ const MessageContainer = () => {
           {
             !loading && messages?.length>0 && (
               messages.map((message)=>(
-                <Message key={message._id} message={message} ownMessage={message.sender==currentUser._id} />
+                <Flex key={message._id} flexDirection={"column"}
+                ref={messages.length-1 === messages.indexOf(message)?messageEndRef:null}
+                >
+                  <Message key={message._id} message={message} ownMessage={message.sender==currentUser._id} />
+                </Flex>
               ))
             )
           }

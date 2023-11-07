@@ -9,6 +9,7 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import { conversationsAtom, selectedConversationAtom } from '../atoms/messagesAtom'
 import userAtom from '../atoms/userAtom'
 import { useNavigate } from 'react-router-dom'
+import { useSocket } from '../context/SocketContext'
 
 const Chat = () => {
     const [searchText, setSearchText] = useState()
@@ -19,6 +20,7 @@ const Chat = () => {
     const [searchLoading, setSearchLoading] = useState(false)
     const [selectedConversation,setSelectedConversation]=useRecoilState(selectedConversationAtom)
     const navigate=useNavigate()
+    const {socket,onlineUsers}=useSocket()
 
     useEffect(() => {
         const getConversation = async () => {
@@ -125,7 +127,9 @@ const Chat = () => {
             }
             {!loading && (
                 conversations?.map((conversation) => (
-                    <Conversation key={conversation._id} conversation={conversation} />
+                    <Conversation key={conversation._id}
+                    isOnline={onlineUsers.includes(conversation.participants[0]._id)}
+                    conversation={conversation} />
                 ))
             )}
 

@@ -28,9 +28,9 @@ function App() {
           <Route path="/" element={ user?<HomePage/>:<Navigate to={"/auth"}/>}/>
           <Route path="/update" element={ user?<UpdateProfilepage/>:<Navigate to={"/auth"}/>}/>
           <Route path="/auth" element={!user?<AuthPage/>:<Navigate to={"/"}/>}/>
-          <Route path="/:username" element={<UserPage/>} />
-          <Route path="/:username/post/:pid" element={<PostPage/>} />
-          <Route path="/search" element={<SearchPage/>}/>
+          <Route path="/:username" element={user?<UserPage/>:<Navigate to={"/auth"}/>} />
+          <Route path="/:username/post/:pid" element={user?<PostPage/>:<Navigate to={"/auth"}/>} />
+          <Route path="/search" element={user?<SearchPage/>:<Navigate to={"/auth"}/>}/>
           <Route path="/conversation" element={user?<Chat/>:<Navigate to={"/"}/>}/>
           <Route path="/conversation/chats" element={user?<MessageContainer/>:<Navigate to={"/"}/>}/>
         </Routes>

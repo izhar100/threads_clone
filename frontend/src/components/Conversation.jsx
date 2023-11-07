@@ -6,7 +6,7 @@ import userAtom from '../atoms/userAtom'
 import { BsCheck2All } from 'react-icons/bs'
 import { selectedConversationAtom } from '../atoms/messagesAtom'
 
-const Conversation = ({conversation}) => {
+const Conversation = ({conversation,isOnline}) => {
   const participant=conversation.participants[0]
   const currentUser=useRecoilValue(userAtom)
   const [selectedConversation,setSelectedConversation]=useRecoilState(selectedConversationAtom)
@@ -24,7 +24,8 @@ const Conversation = ({conversation}) => {
           userProfilePic:participant.profilePic,
           username:participant.username,
           name:participant.name,
-          mock:conversation.mock
+          mock:conversation.mock,
+          isOnline
         })
         localStorage.setItem("selectedConversation",JSON.stringify({
           _id:conversation._id,
@@ -41,7 +42,7 @@ const Conversation = ({conversation}) => {
             <Avatar
             src={participant.profilePic} name={participant.name}
             >
-            <AvatarBadge boxSize={'1em'} bg={"green.500"}/>
+            {isOnline && <AvatarBadge boxSize={'1em'} bg={"green.500"}/>}
             </Avatar>
         </WrapItem>
         <Stack direction={"column"} fontSize={"sm"}>
