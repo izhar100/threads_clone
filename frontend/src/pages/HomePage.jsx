@@ -3,15 +3,17 @@ import React, { useEffect, useState } from 'react'
 import useShowToast from '../hooks/useShowToast'
 import Loader from '../components/Loader'
 import Post from '../components/Post'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import postsAtom from '../atoms/postsAtom'
 import { api } from '../api'
 import CreatePost from '../components/CreatePost'
+import userAtom from '../atoms/userAtom'
 
 const HomePage = () => {
   const [posts,setPosts]=useRecoilState(postsAtom)
   const [loading,setLoading]=useState(true)
   const [openModal,setOpenModel]=useState(false)
+  const user=useRecoilValue(userAtom)
   const showToast=useShowToast()
   useEffect(()=>{
     const getFeedPost=async()=>{
@@ -42,7 +44,7 @@ const HomePage = () => {
   return (
     <>
     <Flex alignItems={"center"} mb={3} pb={2} gap={2} borderBottom={"1px solid #bdbdbd"}>
-      <Avatar src='' name='Ezhar Ashraf'/>
+      <Avatar src={user?.profilePic} name={user?.username}/>
       {/* <Input disabled placeholder='Start a thread...' onClick={()=>setOpenModel(true)}/> */}
       <Box w={"full"}>
         <Text color={"#7d7d7d"} fontWeight={"500"} onClick={()=>setOpenModel(true)} mt={"10px"}>Start a thread...</Text>
