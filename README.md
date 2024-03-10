@@ -30,7 +30,7 @@ Check out the live deployment [here](https://threadsclone-kappa.vercel.app).
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/yourusername/threadsclone.git
+   git clone https://github.com/yourusername/threads_clone.git
    ```
 
 2. **Navigate to the project directory**:
