@@ -15,7 +15,7 @@ export const SocketContextProvider=({children})=>{
     const user=useRecoilValue(userAtom)
     const [onlineUsers,setOnlineUsers]=useState([])
     useEffect(()=>{
-        // const socket=io("http://localhost:8000",{
+        // const socket=io("https://threadsbackend.onrender.com",{
         //     query:{
         //         userId:user?._id
         //     }
@@ -33,9 +33,9 @@ export const SocketContextProvider=({children})=>{
             userId: user?._id,
           },
         });
-        setSocket(socket);
-  
+        setSocket(socket)
         socket.on("getOnlineUsers", (users) => {
+          // console.log("users:",users)
           setOnlineUsers(users);
         });
   

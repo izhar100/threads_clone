@@ -23,6 +23,7 @@ const Chat = () => {
     const {socket,onlineUsers}=useSocket()
 
     useEffect(() => {
+        console.log("socket in chats:",socket,"online users:",onlineUsers)
         const getConversation = async () => {
             try {
                 const res = await fetch(`${api}/messages/conversations`, {

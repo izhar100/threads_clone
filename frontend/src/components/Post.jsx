@@ -10,7 +10,7 @@ import { DeleteIcon } from '@chakra-ui/icons'
 import postsAtom from '../atoms/postsAtom'
 import { api } from '../api'
 
-const Post = ({ post, postedBy }) => {
+const Post = ({ post, postedBy,lastPost,index }) => {
     const [user, setUser] = useState(null)
     const showToast = useShowToast()
     const navigate=useNavigate()
@@ -134,7 +134,7 @@ const Post = ({ post, postedBy }) => {
                     </Flex>
                 </Flex>
             </Link>
-            <Box w={'full'} h={'0.5px'} bg={'gray.light'} my={2}></Box>
+            <Box display={lastPost==index?"none":"block"} w={'full'} h={'0.5px'} bg={'gray.light'} my={2}></Box>
         </>
     )
 }

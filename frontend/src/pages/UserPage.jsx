@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 import useShowToast from '../hooks/useShowToast'
 import Loader from '../components/Loader'
 import NotFound from '../components/NotFound'
-import { Heading } from '@chakra-ui/react'
+import { Box, Button, Flex, Heading } from '@chakra-ui/react'
 import Post from '../components/Post'
 import getUserProfile from '../hooks/getUserProfile'
 import { useRecoilState } from 'recoil'
@@ -13,61 +13,82 @@ import postsAtom from '../atoms/postsAtom'
 import { api } from '../api'
 
 const UserPage = () => {
-  const {loading,user}=getUserProfile()
-  const showToast=useShowToast()
-  const {username}=useParams()
-  const [posts,setPosts]=useRecoilState(postsAtom)
-  const [fetchingPosts,setFetchingPosts]=useState(false)
+  const { loading, user } = getUserProfile()
+  const showToast = useShowToast()
+  const { username } = useParams()
+  const [posts, setPosts] = useRecoilState(postsAtom)
+  const [fetchingPosts, setFetchingPosts] = useState(false)
+  const [page, setPage] = useState(1)
+  const [allDone, setAllDone] = useState(false)
 
-  useEffect(()=>{
-
-    const getPosts=async()=>{
+  useEffect(() => {
+    console.log("page:", page)
+    const getPosts = async () => {
       setFetchingPosts(true)
-      setPosts([])
+      if (page == 1) {
+        setPosts([])
+      }
       try {
-        const res=await fetch(`${api}/posts/user/${username}`,{
-          headers:{
+        const res = await fetch(`${api}/posts/user/${username}?page=${page}`, {
+          headers: {
             'Authorization': `Bearer ${localStorage.getItem("jwt")}`
           }
         })
-        const data=await res.json()
-        if(data.error){
-          return showToast("Error",data.error,"error")
+        const data = await res.json()
+        if (data.error) {
+          return showToast("Error", data.error, "error")
         }
-        setPosts(data)
+        if (data.length == 0 && posts.length > 0) {
+          setAllDone(true)
+        }
+        setPosts((preData) => [...preData, ...data])
       } catch (error) {
-        showToast("Error",error,"error")
+        showToast("Error", error, "error")
         setPosts([])
-      }finally{
+      } finally {
         setFetchingPosts(false)
       }
     }
     getPosts()
 
-  },[username,showToast,setPosts])
+  }, [username, showToast, setPosts, page])
 
-  if(!user && loading){
-    return <Loader/>
+  const handleLoadMore = () => {
+    setPage(pre => pre + 1)
   }
-  if(!user && !loading){
-    return <NotFound text={"User"}/>
+
+  if (!user && loading) {
+    return <Loader />
+  }
+  if (!user && !loading) {
+    return <NotFound text={"User"} />
   }
   return (
     <>
-      <UserHeader user={user}/>
+      <UserHeader user={user} />
       {
-        fetchingPosts && <Loader/>
+        fetchingPosts && <Loader />
       }
       {
-        !fetchingPosts && posts?.length==0 && (
+        !fetchingPosts && posts?.length == 0 && (
           <Heading mt={10} textAlign={"center"}>No any post found!</Heading>
         )
       }
       {
-        !fetchingPosts && posts?.length>0 && (
-          posts?.map((post)=>(
-            <Post key={post._id} post={post} postedBy={post.postedBy} />
+        !fetchingPosts && posts?.length > 0 && (
+          posts?.map((post, ind) => (
+            <Post key={post._id + ind} post={post} postedBy={post.postedBy} lastPost={posts.length} index={ind + 1} />
           ))
+        )
+      }
+      {
+        posts.length > 0 && (
+          <Box>
+            <hr />
+            <Flex my={2} justifyContent={"center"}>{
+              allDone ? "No more posts found!" : <Button colorScheme='blue' onClick={handleLoadMore} isLoading={loading}>Load More</Button>
+            }</Flex>
+          </Box>
         )
       }
     </>
