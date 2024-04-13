@@ -180,7 +180,7 @@ const MessageContainer = () => {
           WebkitBackdropFilter: "blur(10px)"
         }}>
           <Box>
-            <Text textAlign={"center"} mt={4}>timer</Text>
+            <Text textAlign={"center"} mt={4}>this feature is not working right now</Text>
             <br />
             <Box borderRadius={"20px"} mx={2} overflow={"hidden"}>
               {

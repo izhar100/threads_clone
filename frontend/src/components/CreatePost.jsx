@@ -72,11 +72,6 @@ const CreatePost = ({openModal,setOpenModel}) => {
     // boxShadow={ "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"}
   return (
     <>
-      <Button borderRadius={50} position={"fixed"} bottom={4} right={4} onClick={onOpen}
-      boxShadow={ "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"} px={"-2px"} bgColor={"#a0a0a066"} color={"bg.dark"}>
-      <LuPencilLine cursor={"pointer"} size={20}
-      />
-      </Button>
       <Modal isOpen={openModal || isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>

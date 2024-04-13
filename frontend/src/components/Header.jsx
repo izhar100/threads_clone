@@ -19,13 +19,20 @@ const Header = () => {
   const location=useLocation()
   const [auth, setAuth] = useRecoilState(authScreenAtom)
   return (
-    <Box position={"fixed"} w={"100%"} p={3} zIndex={2} bgColor={colorMode == "light" ? "#edf2f7d7" : "#101010db"}>
+    <Box position={"fixed"} w={"100%"} p={3} zIndex={2} bgColor={colorMode == "light" ? "#edf2f7d7" : "#101010db"} style={{
+      backdropFilter: "blur(5px)",
+      WebkitBackdropFilter: "blur(5px)", /* For Safari */
+      backgroundColor: colorMode=="light"?"#ffffff76":"#65656566"
+  }}
+  boxShadow={" rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px"}
+  >
       <Flex maxW={"900px"} m={"auto"} justifyContent={"space-between"}>
         {
           user && (
             <Image
               cursor={'pointer'}
               w={8}
+              h={7}
               alt='logo'
               src={colorMode == "dark" ? "/light-logo.png" : "/dark-logo.png"}
               onClick={toggleColorMode}

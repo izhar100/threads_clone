@@ -11,10 +11,13 @@ import getUserProfile from '../hooks/getUserProfile'
 import { useRecoilState } from 'recoil'
 import postsAtom from '../atoms/postsAtom'
 import { api } from '../api'
+import CreatePost from '../components/CreatePost'
+import { LuPencilLine } from 'react-icons/lu'
 
 const UserPage = () => {
   const { loading, user } = getUserProfile()
   const showToast = useShowToast()
+  const [openModal,setOpenModel]=useState(false)
   const { username } = useParams()
   const [posts, setPosts] = useRecoilState(postsAtom)
   const [fetchingPosts, setFetchingPosts] = useState(false)
@@ -91,6 +94,18 @@ const UserPage = () => {
           </Box>
         )
       }
+      <Button borderRadius={50} position={"fixed"} bottom={4} right={4}  onClick={()=>{
+          if(!openModal){
+            setOpenModel(true)
+          }
+        }}
+      boxShadow={ "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"} px={"-2px"} bgColor={"#a0a0a066"} color={"bg.dark"}>
+      <LuPencilLine cursor={"pointer"} size={20}
+      />
+      </Button>
+      <Box display={"none"}>
+        <CreatePost openModal={openModal} setOpenModel={setOpenModel} />
+      </Box>
     </>
   )
 }
