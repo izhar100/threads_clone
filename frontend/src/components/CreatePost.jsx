@@ -9,6 +9,7 @@ import useShowToast from '../hooks/useShowToast'
 import postsAtom from '../atoms/postsAtom'
 import { useLocation, useParams } from 'react-router-dom'
 import { api } from '../api'
+import { LuPencilLine } from 'react-icons/lu'
 
 const MAX_CHAR=500
 const CreatePost = ({openModal,setOpenModel}) => {
@@ -71,9 +72,9 @@ const CreatePost = ({openModal,setOpenModel}) => {
     // boxShadow={ "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"}
   return (
     <>
-      <Button px={1} borderRadius={50} bgColor={"#009dff39"} position={"fixed"} bottom={4} right={4} onClick={onOpen}
-      boxShadow={ "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"}>
-      <AddIcon cursor={"pointer"} fontSize={22}
+      <Button borderRadius={50} position={"fixed"} bottom={4} right={4} onClick={onOpen}
+      boxShadow={ "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"} px={"-2px"} bgColor={"#a0a0a066"} color={"bg.dark"}>
+      <LuPencilLine cursor={"pointer"} size={20}
       />
       </Button>
       <Modal isOpen={openModal || isOpen} onClose={onClose}>
