@@ -102,11 +102,13 @@ const CreatePost = ({openModal,setOpenModel}) => {
             ref={imageRef}
             onChange={handleImageChange}
             />
+            <Button alignItems={'center'} gap={"5px"} onClick={()=>imageRef.current.click()}>
             <BsFillImageFill
             style={{marginLeft:'5px',cursor:'pointer'}}
             size={16}
-            onClick={()=>imageRef.current.click()}
             />
+            Upload Image
+            </Button>
            </FormControl>
            {
             imgUrl && (

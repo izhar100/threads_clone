@@ -25,9 +25,9 @@ const Header = () => {
           user && (
             <Image
               cursor={'pointer'}
-              w={6}
+              w={8}
               alt='logo'
-              src={colorMode == "dark" ? "/light-logo.svg" : "/dark-logo.svg"}
+              src={colorMode == "dark" ? "/light-logo.png" : "/dark-logo.png"}
               onClick={toggleColorMode}
             />
           )
@@ -45,9 +45,9 @@ const Header = () => {
           !user && (
             <Image
               cursor={'pointer'}
-              w={6}
+              w={10}
               alt='logo'
-              src={colorMode == "dark" ? "/light-logo.svg" : "/dark-logo.svg"}
+              src={colorMode == "dark" ? "/light-logo.png" : "/dark-logo.png"}
               onClick={toggleColorMode}
             />
           )

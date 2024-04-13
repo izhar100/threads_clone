@@ -65,7 +65,7 @@ const UserHeader = ({user}) => {
                     </Flex>
                     <Flex gap={2} alignItems={"center"}>
                         <Text fontSize={"sm"}>@{user?.username}</Text>
-                        <Text fontSize={"xs"} bg={colorMode=="dark"?"gray.dark":"#a67d7d"} color={"gray.light"} p={1} borderRadius={'full'}>threads.net</Text>
+                        <Text fontSize={"xs"} bg={colorMode=="dark"?"gray.dark":"#b1b1b1"} color={"gray.light"} py={"1px"} px={"4px"} borderRadius={'full'}>izharthoughts</Text>
                     </Flex>
                 </Box>
                 <Box>

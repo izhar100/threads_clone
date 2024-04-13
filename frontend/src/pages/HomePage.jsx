@@ -8,6 +8,7 @@ import postsAtom from '../atoms/postsAtom'
 import { api } from '../api'
 import CreatePost from '../components/CreatePost'
 import userAtom from '../atoms/userAtom'
+import { LuPencilLine } from "react-icons/lu";
 
 const HomePage = () => {
   const [posts, setPosts] = useRecoilState(postsAtom)
@@ -59,10 +60,14 @@ const HomePage = () => {
       <Flex alignItems={"center"} mb={3} pb={2} gap={2} borderBottom={"1px solid #bdbdbd"}>
         <Avatar src={user?.profilePic} name={user?.username} />
         {/* <Input disabled placeholder='Start a thread...' onClick={()=>setOpenModel(true)}/> */}
-        <Box w={"full"}>
-          <Text color={"#7d7d7d"} fontWeight={"500"} onClick={() => setOpenModel(true)} mt={"10px"}>Start a thread...</Text>
+        <Box w={"full"} cursor={"pointer"}>
+          <Text color={"#7d7d7d"} fontWeight={"500"} onClick={() => setOpenModel(true)} mt={"10px"}>Izhar-e-thought...</Text>
         </Box>
-        <Button color={"white"} bgColor={"gray.light"}>POST</Button>
+        <Button onClick={()=>{
+          if(!openModal){
+            setOpenModel(true)
+          }
+        }} px={"-2px"} bgColor={"#a0a0a066"} color={"bg.dark"}><LuPencilLine size={"20px"}/></Button>
       </Flex>
       <Box display={"none"}>
         <CreatePost openModal={openModal} setOpenModel={setOpenModel} />
